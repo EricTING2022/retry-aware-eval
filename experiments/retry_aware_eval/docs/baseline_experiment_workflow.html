@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Formal workflow diagram for the fixed-sequence MathQA baseline experiment.">
+  <title>Baseline Experiment Workflow Diagram</title>
+  <style>
+    :root {
+      --paper: #f7f6f1;
+      --ink: #17242f;
+      --muted: #5f6d76;
+      --blue: #3159d9;
+      --blue-soft: #eaf0ff;
+      --orange: #d65d38;
+      --orange-soft: #fff0e9;
+      --green: #24745d;
+      --green-soft: #e8f5ef;
+      --gold: #a77717;
+      --gold-soft: #fff5d8;
+      --line: #aeb6bc;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 18% 8%, rgba(49, 89, 217, 0.07), transparent 25rem),
+        linear-gradient(rgba(23, 36, 47, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23, 36, 47, 0.025) 1px, transparent 1px),
+        var(--paper);
+      background-size: auto, 24px 24px, 24px 24px, auto;
+      font-family: Aptos, "Trebuchet MS", sans-serif;
+      line-height: 1.45;
+    }
+
+    main {
+      width: min(1480px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 60px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 32px;
+      align-items: end;
+      margin-bottom: 24px;
+      padding-bottom: 22px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .kicker {
+      margin-bottom: 8px;
+      color: var(--blue);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 880px;
+      margin: 0 0 10px;
+      font-family: Charter, "Iowan Old Style", "Palatino Linotype", serif;
+      font-size: clamp(2.25rem, 4vw, 4.5rem);
+      font-weight: 600;
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      max-width: 900px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: 9px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      padding: 7px 10px;
+      border: 1px solid currentColor;
+      background: var(--white);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .legend span::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .legend .online { color: var(--orange); }
+    .legend .offline { color: var(--blue); }
+    .legend .result { color: var(--green); }
+
+    .figure-shell {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 22px 55px rgba(23, 36, 47, 0.10);
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .stage-bg { stroke-width: 1.5; }
+    .stage-bg.online { fill: #fffaf7; stroke: #edc1b2; }
+    .stage-bg.offline { fill: #f7f9ff; stroke: #bccaf2; }
+    .stage-bg.heldout { fill: #f6fbf8; stroke: #b8dacd; }
+
+    .stage-tab { stroke: none; }
+    .stage-tab.online { fill: var(--orange); }
+    .stage-tab.offline { fill: var(--blue); }
+    .stage-tab.heldout { fill: var(--green); }
+
+    .stage-title {
+      fill: var(--white);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+    }
+
+    .stage-note {
+      fill: var(--white);
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.88;
+    }
+
+    .flow-line {
+      fill: none;
+      stroke: var(--blue);
+      stroke-width: 3;
+      marker-end: url(#arrow-blue);
+    }
+
+    .flow-line.orange {
+      stroke: var(--orange);
+      marker-end: url(#arrow-orange);
+    }
+
+    .flow-line.green {
+      stroke: var(--green);
+      marker-end: url(#arrow-green);
+    }
+
+    .flow-line.dashed { stroke-dasharray: 8 7; }
+
+    .node {
+      fill: var(--white);
+      stroke: var(--blue);
+      stroke-width: 2.4;
+      filter: url(#soft-shadow);
+    }
+
+    .node.online { stroke: var(--orange); }
+    .node.result { stroke: var(--green); }
+    .node.offline { stroke: var(--blue); }
+    .node.subdued { stroke: var(--line); }
+    .node.fill-blue { fill: var(--blue); stroke: var(--blue); }
+    .node.fill-green { fill: var(--green); stroke: var(--green); }
+    .node.fill-orange { fill: var(--orange); stroke: var(--orange); }
+    .node.fill-gold { fill: var(--gold-soft); stroke: var(--gold); }
+
+    .node-title {
+      fill: var(--ink);
+      font-size: 18px;
+      font-weight: 800;
+      text-anchor: middle;
+    }
+
+    .node-copy {
+      fill: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+      text-anchor: middle;
+    }
+
+    .node-title.inverse,
+    .node-copy.inverse { fill: var(--white); }
+
+    .node-copy.inverse { opacity: 0.9; }
+
+    .decision-text {
+      fill: var(--ink);
+      font-size: 17px;
+      font-weight: 800;
+      text-anchor: middle;
+    }
+
+    .branch-label {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .branch-label.yes { fill: var(--green); }
+    .branch-label.no { fill: var(--orange); }
+    .branch-label.loop { fill: var(--blue); }
+
+    .annotation-box {
+      fill: #f5f3eb;
+      stroke: #b7b1a5;
+      stroke-width: 1.3;
+      stroke-dasharray: 5 4;
+    }
+
+    .annotation-title {
+      fill: var(--ink);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .annotation-copy {
+      fill: var(--muted);
+      font-size: 12.5px;
+    }
+
+    .small-label {
+      fill: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    .result-chip {
+      fill: var(--green-soft);
+      stroke: var(--green);
+      stroke-width: 1.5;
+    }
+
+    .result-big {
+      fill: var(--green);
+      font-family: Charter, "Iowan Old Style", serif;
+      font-size: 28px;
+      font-weight: 800;
+      text-anchor: middle;
+    }
+
+    .result-label {
+      fill: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-anchor: middle;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+    }
+
+    .caption-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line);
+      background: #f1f0eb;
+    }
+
+    .caption-item { padding: 16px 18px; }
+    .caption-item + .caption-item { border-left: 1px solid var(--line); }
+
+    .caption-item strong {
+      display: block;
+      margin-bottom: 4px;
+      font-family: Charter, "Iowan Old Style", serif;
+      font-size: 0.96rem;
+    }
+
+    .caption-item span {
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.73rem;
+    }
+
+    @media (max-width: 900px) {
+      main { width: min(100% - 16px, 1480px); padding-top: 20px; }
+      header { grid-template-columns: 1fr; }
+      .legend { grid-template-columns: repeat(3, 1fr); }
+      .legend span { justify-content: center; }
+      .figure-shell { overflow-x: auto; }
+      svg { width: 1250px; max-width: none; }
+      .caption-grid { grid-template-columns: repeat(2, 1fr); }
+      .caption-item:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }
+      .caption-item:nth-child(4) { border-top: 1px solid var(--line); }
+    }
+
+    @media (max-width: 560px) {
+      .legend, .caption-grid { grid-template-columns: 1fr; }
+      .caption-item + .caption-item { border-left: 0; border-top: 1px solid var(--line); }
+      footer { display: block; }
+    }
+
+    @media print {
+      @page { size: A3 portrait; margin: 8mm; }
+      body { background: white; }
+      main { width: 100%; padding: 0; }
+      header { margin-bottom: 10px; }
+      .figure-shell { border-radius: 0; box-shadow: none; }
+      .caption-grid { break-inside: avoid; }
+      footer { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <div class="kicker">Formal workflow · Qian-style fixed-sequence baselines</div>
+        <h1>How the experiment collects, searches, and evaluates</h1>
+        <p class="subtitle">
+          The configuration is fixed as A1–V1–A2, but execution is conditional:
+          V1 may stop the online workflow before A2. Offline search never invents or removes calls;
+          it replays the saved outcome and realized cost of each online execution.
+        </p>
+      </div>
+      <div class="legend" aria-label="Execution-mode legend">
+        <span class="online">Online API</span>
+        <span class="offline">Offline replay</span>
+        <span class="result">Outcome</span>
+      </div>
+    </header>
+
+    <section class="figure-shell" aria-label="Baseline experiment workflow">
+      <svg viewBox="0 0 1400 2440" role="img" aria-labelledby="diagram-title diagram-desc">
+        <title id="diagram-title">Baseline experiment workflow with online and offline stages</title>
+        <desc id="diagram-desc">
+          A formal flowchart showing the 200-question split, conditional A1-V1-A2 execution,
+          offline replay of four search baselines, workflow freezing, and held-out online evaluation.
+        </desc>
+
+        <defs>
+          <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#3159d9"></path>
+          </marker>
+          <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#d65d38"></path>
+          </marker>
+          <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#24745d"></path>
+          </marker>
+          <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="150%">
+            <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#17242f" flood-opacity="0.09"></feDropShadow>
+          </filter>
+        </defs>
+
+        <!-- Dataset entry -->
+        <rect class="node offline" x="520" y="42" width="360" height="74" rx="36"></rect>
+        <text class="node-title" x="700" y="73">Official MathQA test pool</text>
+        <text class="node-copy" x="700" y="96">Deterministic 200-question sample</text>
+
+        <path class="flow-line" d="M700 116 L700 156"></path>
+
+        <rect class="node offline" x="460" y="160" width="480" height="92" rx="4"></rect>
+        <text class="node-title" x="700" y="193">Partition before any experiment</text>
+        <text class="node-copy" x="700" y="218">100 development · 100 reserved test</text>
+        <text class="node-copy" x="700" y="238">Reserved questions remain locked until workflow freeze</text>
+
+        <path class="flow-line orange" d="M700 252 L700 318"></path>
+
+        <!-- Stage 1 -->
+        <rect class="stage-bg online" x="34" y="320" width="1332" height="850" rx="18"></rect>
+        <path class="stage-tab online" d="M34 338 Q34 320 52 320 H330 V402 H34 Z"></path>
+        <text class="stage-title" x="58" y="351">STAGE 1 · ONLINE DEVELOPMENT</text>
+        <text class="stage-note" x="58" y="378">Real OpenRouter calls and real recorded costs</text>
+
+        <rect class="node online" x="470" y="352" width="460" height="82" rx="38"></rect>
+        <text class="node-title" x="700" y="384">Select next development execution</text>
+        <text class="node-copy" x="700" y="408">27 configurations × 100 questions = 2,700 records</text>
+
+        <path class="flow-line orange" d="M700 434 L700 472"></path>
+
+        <rect class="node online" x="505" y="476" width="390" height="76" rx="3"></rect>
+        <text class="node-title" x="700" y="506">Call first solver A1</text>
+        <text class="node-copy" x="700" y="531">Generate structured MathQA answer</text>
+
+        <path class="flow-line orange" d="M700 552 L700 586"></path>
+
+        <polygon class="node fill-gold" points="700,590 850,670 700,750 550,670"></polygon>
+        <text class="decision-text" x="700" y="664">Usable A1</text>
+        <text class="decision-text" x="700" y="686">response?</text>
+
+        <path class="flow-line orange" d="M850 670 L1040 670"></path>
+        <text class="branch-label no" x="906" y="654">No</text>
+        <rect class="node subdued" x="1044" y="625" width="252" height="90" rx="4"></rect>
+        <text class="node-title" x="1170" y="658">Record failure</text>
+        <text class="node-copy" x="1170" y="681">Do not score as incorrect</text>
+        <text class="node-copy" x="1170" y="700">Resume collection later</text>
+        <path class="flow-line orange dashed" d="M1170 715 L1170 770 L940 770 L940 393 L930 393"></path>
+
+        <path class="flow-line orange" d="M700 750 L700 796"></path>
+        <text class="branch-label yes" x="718" y="780">Yes</text>
+
+        <rect class="node online" x="505" y="800" width="390" height="76" rx="3"></rect>
+        <text class="node-title" x="700" y="830">Call verifier V1</text>
+        <text class="node-copy" x="700" y="855">Independently recompute and audit A1</text>
+
+        <path class="flow-line orange" d="M700 876 L700 910"></path>
+
+        <polygon class="node fill-gold" points="700,914 850,994 700,1074 550,994"></polygon>
+        <text class="decision-text" x="700" y="988">Verifier</text>
+        <text class="decision-text" x="700" y="1010">accepts A1?</text>
+
+        <path class="flow-line green" d="M550 994 L384 994"></path>
+        <text class="branch-label yes" x="476" y="978">Yes: early stop online</text>
+        <rect class="node result" x="104" y="938" width="276" height="112" rx="4"></rect>
+        <text class="node-title" x="242" y="970">Return A1</text>
+        <text class="node-copy" x="242" y="994">A2 is not called</text>
+        <text class="node-copy" x="242" y="1015">Cost = c(A1) + c(V1)</text>
+        <text class="node-copy" x="242" y="1036">A2 status: skipped</text>
+
+        <path class="flow-line orange" d="M850 994 L1016 994"></path>
+        <text class="branch-label no" x="918" y="978">No</text>
+        <rect class="node online" x="1020" y="938" width="276" height="112" rx="4"></rect>
+        <text class="node-title" x="1158" y="970">Call terminal solver A2</text>
+        <text class="node-copy" x="1158" y="994">Return A2 without V2</text>
+        <text class="node-copy" x="1158" y="1015">Cost = c(A1) + c(V1) + c(A2)</text>
+        <text class="node-copy" x="1158" y="1036">A2 status: executed</text>
+
+        <path class="flow-line orange" d="M242 1050 L242 1095 L606 1095"></path>
+        <path class="flow-line orange" d="M1158 1050 L1158 1095 L794 1095"></path>
+        <rect class="node online" x="606" y="1062" width="188" height="68" rx="4"></rect>
+        <text class="node-title" x="700" y="1090">Grade and log</text>
+        <text class="node-copy" x="700" y="1113">Final reward + realized cost</text>
+
+        <rect class="annotation-box" x="66" y="430" width="318" height="136" rx="8"></rect>
+        <text class="annotation-title" x="86" y="458">Fixed configuration, conditional path</text>
+        <text class="annotation-copy" x="86" y="484">A workflow label always contains A1, V1, and A2.</text>
+        <text class="annotation-copy" x="86" y="507">A2 influences that arm only on rejected questions.</text>
+        <text class="annotation-copy" x="86" y="530">An early-stopped record still updates the arm's</text>
+        <text class="annotation-copy" x="86" y="550">accuracy, sample count, and realized cost.</text>
+
+        <rect class="annotation-box" x="1016" y="802" width="310" height="102" rx="8"></rect>
+        <text class="annotation-title" x="1036" y="830">Development outcome observed online</text>
+        <text class="annotation-copy" x="1036" y="855">A1 and V1 always run in a completed record.</text>
+        <text class="annotation-copy" x="1036" y="878">A2 runs only when V1 rejects.</text>
+
+        <!-- Stage transition: completeness -->
+        <path class="flow-line orange" d="M700 1130 L700 1194"></path>
+        <polygon class="node fill-gold" points="700,1198 850,1272 700,1346 550,1272"></polygon>
+        <text class="decision-text" x="700" y="1266">All 2,700 records</text>
+        <text class="decision-text" x="700" y="1288">completed?</text>
+
+        <path class="flow-line orange dashed" d="M550 1272 L420 1272 L420 393 L470 393"></path>
+        <text class="branch-label no" x="454" y="1256">No: next execution</text>
+
+        <path class="flow-line green" d="M850 1272 L1034 1272"></path>
+        <text class="branch-label yes" x="908" y="1256">Yes</text>
+        <rect class="node fill-green" x="1038" y="1227" width="276" height="90" rx="42"></rect>
+        <text class="node-title inverse" x="1176" y="1260">Seal development panel</text>
+        <text class="node-copy inverse" x="1176" y="1285">Saved outcomes and historical USD</text>
+
+        <path class="flow-line" d="M1176 1317 L1176 1380 L700 1380 L700 1430"></path>
+
+        <!-- Stage 2 -->
+        <rect class="stage-bg offline" x="34" y="1432" width="1332" height="565" rx="18"></rect>
+        <path class="stage-tab offline" d="M34 1450 Q34 1432 52 1432 H330 V1514 H34 Z"></path>
+        <text class="stage-title" x="58" y="1463">STAGE 2 · OFFLINE SEARCH</text>
+        <text class="stage-note" x="58" y="1490">Sequential replay; no new model calls</text>
+
+        <rect class="node offline" x="460" y="1466" width="480" height="88" rx="40"></rect>
+        <text class="node-title" x="700" y="1498">Initialize four baselines</text>
+        <text class="node-copy" x="700" y="1523">100 queue-order seeds · same paid 27-record initialization</text>
+
+        <rect class="annotation-box" x="78" y="1560" width="300" height="172" rx="8"></rect>
+        <text class="annotation-title" x="98" y="1588">Compared methods</text>
+        <text class="annotation-copy" x="98" y="1615">1. GittinsEval · full-panel mean cost</text>
+        <text class="annotation-copy" x="98" y="1640">2. GittinsEval · unit-run cost</text>
+        <text class="annotation-copy" x="98" y="1665">3. UCB-E</text>
+        <text class="annotation-copy" x="98" y="1690">4. Uniform</text>
+        <text class="annotation-copy" x="98" y="1715">All pay each record's logged realized USD.</text>
+
+        <path class="flow-line" d="M700 1554 L700 1592"></path>
+        <rect class="node offline" x="500" y="1596" width="400" height="78" rx="3"></rect>
+        <text class="node-title" x="700" y="1626">Select one fixed configuration</text>
+        <text class="node-copy" x="700" y="1651">The algorithm chooses an arm, not A1 or A2 separately</text>
+
+        <path class="flow-line" d="M700 1674 L700 1712"></path>
+        <rect class="node offline" x="470" y="1716" width="460" height="96" rx="3"></rect>
+        <text class="node-title" x="700" y="1746">Reveal one saved execution record</text>
+        <text class="node-copy" x="700" y="1771">Observe final correctness and the online realized cost</text>
+        <text class="node-copy" x="700" y="1793">Update statistics and cumulative historical USD</text>
+
+        <rect class="annotation-box" x="1014" y="1594" width="306" height="150" rx="8"></rect>
+        <text class="annotation-title" x="1034" y="1622">Early stop is already embedded</text>
+        <text class="annotation-copy" x="1034" y="1649">Offline replay does not decide whether A2 ran.</text>
+        <text class="annotation-copy" x="1034" y="1674">It reads the online record as collected:</text>
+        <text class="annotation-copy" x="1034" y="1699">two-call cost after acceptance, or</text>
+        <text class="annotation-copy" x="1034" y="1724">three-call cost after rejection.</text>
+
+        <rect class="annotation-box" x="1014" y="1760" width="306" height="90" rx="8"></rect>
+        <text class="annotation-title" x="1034" y="1788">Observed search-efficiency order</text>
+        <text class="annotation-copy" x="1034" y="1815">Unit-run Gittins → UCB-E → full-cost Gittins</text>
+        <text class="annotation-copy" x="1034" y="1838">→ Uniform; all reach an optimum at full budget.</text>
+
+        <path class="flow-line" d="M700 1812 L700 1846"></path>
+        <polygon class="node fill-gold" points="700,1850 842,1914 700,1978 558,1914"></polygon>
+        <text class="decision-text" x="700" y="1908">More affordable</text>
+        <text class="decision-text" x="700" y="1930">records?</text>
+
+        <path class="flow-line dashed" d="M558 1914 L430 1914 L430 1635 L500 1635"></path>
+        <text class="branch-label loop" x="448" y="1898">Yes: continue</text>
+
+        <path class="flow-line green" d="M842 1914 L1014 1914"></path>
+        <text class="branch-label no" x="914" y="1898">No</text>
+        <rect class="node fill-green" x="1018" y="1867" width="300" height="94" rx="44"></rect>
+        <text class="node-title inverse" x="1168" y="1900">Recommend and freeze</text>
+        <text class="node-copy inverse" x="1168" y="1926">Final development workflow</text>
+        <text class="node-copy inverse" x="1168" y="1946">Ministral → GPT-OSS → GPT-OSS</text>
+
+        <rect class="annotation-box" x="78" y="1785" width="300" height="138" rx="8"></rect>
+        <text class="annotation-title" x="98" y="1813">Report at matched budgets</text>
+        <text class="annotation-copy" x="98" y="1840">Recommended development accuracy</text>
+        <text class="annotation-copy" x="98" y="1865">Simple regret to brute-force optimum</text>
+        <text class="annotation-copy" x="98" y="1890">Optimal-selection fraction across seeds</text>
+
+        <path class="flow-line green" d="M1168 1961 L1168 2028 L700 2028 L700 2070"></path>
+
+        <!-- Stage 3 -->
+        <rect class="stage-bg heldout" x="34" y="2072" width="1332" height="318" rx="18"></rect>
+        <path class="stage-tab heldout" d="M34 2090 Q34 2072 52 2072 H330 V2154 H34 Z"></path>
+        <text class="stage-title" x="58" y="2103">STAGE 3 · ONLINE RESERVED TEST</text>
+        <text class="stage-note" x="58" y="2130">Real API calls; no further tuning</text>
+
+        <rect class="node result" x="410" y="2104" width="580" height="90" rx="44"></rect>
+        <text class="node-title" x="700" y="2137">Unlock 100 reserved questions</text>
+        <text class="node-copy" x="700" y="2163">Run only the frozen workflow using the same online early-stop rule</text>
+
+        <path class="flow-line green" d="M700 2194 L700 2228"></path>
+        <polygon class="node fill-gold" points="700,2232 825,2288 700,2344 575,2288"></polygon>
+        <text class="decision-text" x="700" y="2282">V1 accepts</text>
+        <text class="decision-text" x="700" y="2304">A1?</text>
+
+        <path class="flow-line green" d="M575 2288 L430 2288"></path>
+        <text class="branch-label yes" x="489" y="2272">Yes</text>
+        <rect class="node result" x="168" y="2243" width="258" height="90" rx="4"></rect>
+        <text class="node-title" x="297" y="2276">Return A1</text>
+        <text class="node-copy" x="297" y="2300">A2 skipped · two-call cost</text>
+        <text class="node-copy" x="297" y="2320">Observed in 49 of 100 runs</text>
+
+        <path class="flow-line orange" d="M825 2288 L970 2288"></path>
+        <text class="branch-label no" x="890" y="2272">No</text>
+        <rect class="node online" x="974" y="2243" width="258" height="90" rx="4"></rect>
+        <text class="node-title" x="1103" y="2276">Call and return A2</text>
+        <text class="node-copy" x="1103" y="2300">No V2 · three-call cost</text>
+        <text class="node-copy" x="1103" y="2320">Observed in 51 of 100 runs</text>
+
+        <!-- Final output -->
+        <path class="flow-line green" d="M297 2333 L297 2370 L550 2370"></path>
+        <path class="flow-line green" d="M1103 2333 L1103 2370 L850 2370"></path>
+        <rect class="node fill-green" x="550" y="2338" width="300" height="84" rx="40"></rect>
+        <text class="node-title inverse" x="700" y="2371">Final held-out report</text>
+        <text class="node-copy inverse" x="700" y="2397">Accuracy · deployment cost · full usage audit</text>
+
+        <rect class="result-chip" x="70" y="2350" width="210" height="58" rx="8"></rect>
+        <text class="result-big" x="175" y="2381">87%</text>
+        <text class="result-label" x="175" y="2400">test accuracy</text>
+
+        <rect class="result-chip" x="1120" y="2350" width="210" height="58" rx="8"></rect>
+        <text class="result-big" x="1225" y="2381">0.009012¢</text>
+        <text class="result-label" x="1225" y="2400">mean cost / question</text>
+      </svg>
+
+      <div class="caption-grid" aria-label="Interpretation notes">
+        <div class="caption-item">
+          <strong>Online early stopping</strong>
+          <span>The V1 decision prevents an A2 API request immediately during development or reserved-test execution.</span>
+        </div>
+        <div class="caption-item">
+          <strong>Offline replay</strong>
+          <span>Search operates on saved records. It makes no API calls and never recalculates the V1 branch.</span>
+        </div>
+        <div class="caption-item">
+          <strong>Search unit</strong>
+          <span>Each arm is one complete fixed A1–V1–A2 configuration, not an individual solver or verifier.</span>
+        </div>
+        <div class="caption-item">
+          <strong>Held-out boundary</strong>
+          <span>Only the frozen winner is collected on reserved test; those outcomes cannot influence model selection.</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Recorded development calls: 2,700 A1 + 2,700 V1 + 1,285 A2 = 6,685 total</span>
+      <span>Recorded reserved-test calls: 100 A1 + 100 V1 + 51 A2 = 251 total</span>
+    </footer>
+  </main>
+</body>
+</html>

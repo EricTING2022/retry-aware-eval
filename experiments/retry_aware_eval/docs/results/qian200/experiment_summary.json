@@ -1,0 +1,68 @@
+{
+  "best_development_accuracy": 0.9,
+  "bootstrap_samples": 10000,
+  "bootstrap_seed": 20261005,
+  "configurations": 27,
+  "development_collection_reported_cost_usd": 0.249293557,
+  "development_executed_calls": 6685,
+  "development_optimum_count": 2,
+  "development_questions": 100,
+  "development_run_id": "99d50e8c-fc81-4ed3-9719-a986222b1d33",
+  "development_wall_seconds": 4039.101509,
+  "development_workflows": 2700,
+  "protocol_status": "completed_single_collection_with_offline_search",
+  "reserved_test_collection_reported_cost_usd": 0.009012483,
+  "reserved_test_executed_calls": 251,
+  "reserved_test_questions": 100,
+  "reserved_test_run_id": "bcda930a-fc8e-420b-a594-22b8b2261690",
+  "reserved_test_wall_seconds": 199.195688,
+  "schema_version": "qian200-analysis-v1",
+  "search_seed_count": 100,
+  "selected_configuration_id": "a0d6b38a37fee0a9fe94",
+  "selected_development_accuracy": 0.9,
+  "selected_development_accuracy_bootstrap_95_ci": [
+    0.84,
+    0.95
+  ],
+  "selected_reserved_test_accuracy": 0.87,
+  "selected_reserved_test_accuracy_bootstrap_95_ci": [
+    0.8,
+    0.93
+  ],
+  "selected_reserved_test_mean_deployment_cost_usd": 9.012483e-05,
+  "selected_workflow": "Ministral-8B \u2192 GPT-OSS-20B \u2192 GPT-OSS-20B",
+  "source_artifacts": {
+    "development_panel.jsonl": {
+      "bytes": 1042691,
+      "sha256": "b5f0394c097dbf6be4a95af3054fe150ec7e5ab114d1f41c844aa149cabae8fa"
+    },
+    "development_summary.json": {
+      "bytes": 2881,
+      "sha256": "bf5d6cd39c428f7561753e98b45e263763faee9fefc54e41b34729477f47b7e2"
+    },
+    "final_held_out.json": {
+      "bytes": 5984771,
+      "sha256": "a248c5237ffd28fb8325147714c229940174d3afc706a314ff2b5bc2ddf10c7b"
+    },
+    "final_held_out_100_seeds_matched_budget_curve.csv": {
+      "bytes": 37617,
+      "sha256": "ab6981557d588bc9b44a62abed0017c215e49e053a32da999b15c8502306021d"
+    },
+    "reserved_test_panel.jsonl": {
+      "bytes": 39235,
+      "sha256": "6c9e061cd8712b6dc3b5d7d457859c4d916a2342f5faf5a20f93a33af67afff2"
+    },
+    "reserved_test_summary.json": {
+      "bytes": 2015,
+      "sha256": "7bccf69b564f6e26017cfe9141ba0b04134116162e9c24b725c5019d8880e7a9"
+    },
+    "selected_configurations.json": {
+      "bytes": 169,
+      "sha256": "3b0ca1445bc3dbda1a476b909750613562607e2dc76e7e474c6927fe347850b4"
+    }
+  },
+  "total_collection_reported_cost_usd": 0.25830604,
+  "total_input_tokens": 2154296,
+  "total_output_tokens": 706767,
+  "total_reasoning_tokens": 383060
+}

@@ -1,0 +1,5 @@
+method,display_name,search_seeds,initialization_cost_usd,first_50pct_optimal_cost_usd,first_90pct_optimal_cost_usd,stable_90pct_optimal_cost_usd,final_optimal_selection_fraction,regret_auc_percentage_point_usd,final_development_accuracy,final_recommended_configuration_id,held_out_evaluation_count,reserved_test_accuracy,reserved_test_mean_deployment_cost_usd
+gittins_full_panel_cost,GittinsEval (full-panel mean cost),100,0.003030750000000001,0.08101397221666629,0.1713103347833325,0.1713103347833325,1.0,0.3158320499774986,0.9,a0d6b38a37fee0a9fe94,1,0.87,9.012483e-05
+gittins_unit_run_cost,GittinsEval (unit-run cost),100,0.003030750000000001,0.039970171049999816,0.07280521198333298,0.07280521198333298,1.0,0.12528620306124943,0.9,a0d6b38a37fee0a9fe94,1,0.87,9.012483e-05
+ucb_e,UCB-E,100,0.003030750000000001,0.04612674122499978,0.0830661622749996,0.0830661622749996,1.0,0.2008273191084991,0.9,a0d6b38a37fee0a9fe94,1,0.87,9.012483e-05
+uniform,Uniform,100,0.003030750000000001,0.16720595466666585,0.24724136694166546,0.24724136694166546,1.0,0.5784815945932891,0.9,a0d6b38a37fee0a9fe94,1,0.87,9.012483e-05

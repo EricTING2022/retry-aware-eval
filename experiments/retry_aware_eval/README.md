@@ -1,178 +1,209 @@
 # Retry-Aware Evaluation Framework
 
-This directory contains the first implementation scaffold for Qian Xie's
-October 5 solver/verifier experiment. It is intentionally small: the core is a
-parameterized state machine, a durable SQLite ledger, independent MathQA
-grading, alternative cost views, and offline tests. It does not make API calls
-unless application code explicitly constructs and invokes `OpenRouterClient`.
+This project evaluates fixed solver-verifier workflows with retries on MathQA.
+It provides an auditable execution engine, durable SQLite records, independent
+answer grading, four offline search baselines, and a completed
+100-development/100-reserved-test experiment over 27 one-retry workflows.
 
-New runs also emit a detailed JSONL audit log with one nested record per
-workflow, including every solver/verifier request, response, parsed answer,
-verdict, token category, reported cost, provider identity, call latency, and
-workflow latency. Export any saved run again with:
+Every collected workflow retains its solver and verifier requests, raw
+responses, parsed answers, verdicts, token usage, provider identity, latency,
+reported cost, and final grade. The committed figures and compact result tables
+let collaborators review the completed experiment without rerunning paid model
+calls.
+
+## What has been completed
+
+- Constructed a deterministic 200-question sample from the official MathQA test
+  split with seed `20261005`, then divided it into 100 development questions and
+  100 disjoint reserved-test questions.
+- Evaluated all 27 fixed one-retry workflows on the development partition,
+  producing 2,700 completed workflow executions.
+- Compared GittinsEval with full-panel mean cost, GittinsEval with unit-run cost,
+  UCB-E, and Uniform search across 100 offline queue-order seeds.
+- Froze the development recommendation before collecting its 100-question
+  reserved-test evaluation.
+- Exported audit-friendly summaries, matched-budget curves, publication-quality
+  PNG/SVG figures, and an interactive workflow diagram.
+- Added unit and integration coverage for configuration generation, retry
+  semantics, grading, storage, detailed logs, resumable collection, and all four
+  search baselines.
+
+## Experiment setup
+
+| Item | Setting |
+|---|---|
+| Benchmark | MathQA official test split; deterministic 200-question sample |
+| Partition | 100 development and 100 reserved-test questions |
+| Models | `openai/gpt-oss-20b`, `mistralai/ministral-8b-2512`, `qwen/qwen3-32b` |
+| Workflow | Solver `a1`, verifier `v1`, and terminal solver `a2` after rejection |
+| Configurations | 27 solver-verifier-solver sequences |
+| Development records | 2,700 balanced workflow executions |
+| Search methods | GittinsEval/full-panel cost, GittinsEval/unit cost, UCB-E, Uniform |
+| Search seeds | 100 offline seeds (`0` through `99`) |
+| Maximum horizon | 2,700 purchased records per method and seed |
+| Budget alignment | 121 matched realized-USD checkpoints |
+| Held-out protocol | Freeze the development recommendation, then evaluate it once on reserved test |
+
+The benchmark SHA-256 is
+`b7b7e583c8f2ba8711dd7b1f531e8f5cb1a913f843d6f7aa5feedc67b7f71b32`.
+Requests used strict JSON schemas, temperature zero, no response cache, low
+reasoning effort for GPT-OSS, and disabled reasoning plus `/no_think` for
+Qwen3.
+
+## Results
+
+### Search efficiency
+
+The plots show recommendation accuracy and simple regret as the four search
+methods purchase additional saved workflow records. The USD curves use the
+historical provider-reported cost of every executed call; the evaluation-count
+curves report the mean number of completed workflows at the same matched budget
+checkpoints.
+
+![Four fixed-sequence baseline anytime curves](docs/figures/qian200/baseline_anytime_curves.png)
+
+The low-budget view highlights how quickly each method reaches a workflow tied
+with the development optimum.
+
+![Accuracy gap to the development optimum at low budgets](docs/figures/qian200/baseline_gap_early_budget.png)
+
+| Method | Budget where at least 50% of seeds select an optimum | Budget where at least 90% select an optimum | Regret AUC (percentage-point × USD) | Terminal optimal-selection fraction |
+|---|---:|---:|---:|---:|
+| GittinsEval, full-panel mean cost | $0.08101 | $0.17131 | 0.3158 | 100% |
+| GittinsEval, unit-run cost | **$0.03997** | **$0.07281** | **0.1253** | 100% |
+| UCB-E | $0.04613 | $0.08307 | 0.2008 | 100% |
+| Uniform | $0.16721 | $0.24724 | 0.5785 | 100% |
+
+The common paid-initialization boundary is $0.003031 and the common terminal
+budget is $0.249294. In this experiment, unit-run Gittins reaches the optimum
+most efficiently, followed by UCB-E, full-panel-cost Gittins, and Uniform.
+
+### Configuration landscape and reserved-test result
+
+Two workflows reach 90% development accuracy. The deterministic tie rule freezes
+configuration `a0d6b38a37fee0a9fe94`:
+
+`Ministral-8B solver → GPT-OSS-20B verifier → GPT-OSS-20B terminal solver`.
+
+![Development accuracy and deployment cost for all configurations](docs/figures/qian200/configuration_accuracy_cost.png)
+
+| Metric | Estimate | Question-bootstrap 95% interval |
+|---|---:|---:|
+| Development accuracy | 90% | [84%, 95%] |
+| Reserved-test accuracy | 87% | [80%, 93%] |
+| Reserved-test mean deployment cost | $0.000090125/question | Descriptive |
+
+| Partition | Workflow executions | Executed calls | Provider-reported cost | Wall time |
+|---|---:|---:|---:|---:|
+| Development | 2,700 | 6,685 | $0.249294 | 67m 19s |
+| Reserved test | 100 | 251 | $0.009012 | 3m 19s |
+| **Total** | **2,800** | **6,936** | **$0.258306** | **70m 38s** |
+
+Across both partitions, the run recorded 2,154,296 input tokens, 706,767 output
+tokens, and 383,060 reasoning tokens. Every executed call has a recorded cost.
+
+The complete reviewable outputs are available here:
+
+- [interactive workflow diagram](docs/baseline_experiment_workflow.html)
+- [experiment summary](docs/results/qian200/experiment_summary.json)
+- [baseline summary](docs/results/qian200/baseline_summary.csv)
+- [matched-budget curve](docs/results/qian200/matched_budget_curve.csv)
+- [configuration summary](docs/results/qian200/configuration_summary.csv)
+- [usage summary](docs/results/qian200/usage_summary.csv)
+- [PNG and SVG figures](docs/figures/qian200/)
+
+## Environment setup
+
+Python 3.11 or newer is required. Run the following commands from this
+directory.
+
+### PowerShell
 
 ```powershell
-python scripts/export_detailed_log.py `
-  --database artifacts/openrouter_pilot.sqlite3 `
-  --run-id RUN_ID `
-  --output artifacts/run_detailed.jsonl
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -e ".[analysis]"
 ```
 
-It also includes Qian's four fixed-sequence, retry-unaware outer-search
-baselines and a reproducible 200-question MathQA benchmark pool. These methods
-select among complete workflow configurations; they do not replace the
-retry-aware controller described below.
+### Bash, Git Bash, or WSL
 
-## Workflow semantics
-
-For `max_retries = r`, a configuration contains:
-
-- `r + 1` ordered solver models;
-- `r` ordered verifier models;
-- no verifier after the final solver attempt.
-
-After each non-final solver response, the configured verifier receives the
-question, options, and solver response. `{"accepted": true}` returns that
-answer immediately. Any other valid verdict continues to the next attempt. An
-invalid verifier response is retained as an error and does not count as an
-acceptance. When retries are exhausted, the last solver response is returned
-without another verifier call.
-
-With three independent solver and verifier candidates, the configuration count
-is `3 ** (2*r + 1)`: 27 for one retry and 243 for two retries. A fixed-verifier
-reference is generated by passing a one-model verifier candidate list.
-
-## Layout
-
-```text
-src/retry_eval/
-  configuration.py  arbitrary retry counts and Cartesian configuration generation
-  workflow.py       early-stop state machine
-  prompts.py        version-controlled solver and verifier prompts
-  profiles.py       OpenRouter model IDs and role-specific controls
-  client.py         one-request OpenRouter adapter with no automatic retries
-  storage.py        SQLite experiment ledger
-  grading.py        independent MathQA option grading
-  costs.py          equal-call, fixed-call, token-price, and reported-cost views
-  benchmark.py      MathQA loader that separates prompt data from answer keys
-  static_baselines.py  GittinsEval, UCB-E, and Uniform offline replay
-scripts/
-  prepare_mathqa.py       official download and deterministic 200-item sample
-  prepare_pilot20.py      freeze 10 development + 10 reserved-test questions
-  run_openrouter_pilot.py preview-gated paid pilot collector
-  export_detailed_log.py  SQLite ledger to per-workflow audit JSONL
-  export_static_panel.py  SQLite ledger to balanced panel JSONL
-  run_static_baselines.py four-method offline comparison
-data/mathqa/
-  test_200.jsonl    100 development + 100 reserved-test questions
-  manifest.json     source hashes, seed, indices, and output hash
-  pilot_20.jsonl    fixed 10 + 10 end-to-end pilot subset
-tests/
-  test_retry_eval.py
-  test_benchmark.py
-  test_static_baselines.py
-examples/
-  minimal_record_demo.py
-  minimal_static_baseline_demo.py
-docs/
-  runtime_prompts.md
-handoff/
-  NEW_CHAT_IMPLEMENTATION_PROMPT.md
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e ".[analysis]"
 ```
 
-## Offline verification
+The `analysis` extra installs Matplotlib for regenerating figures. The package
+itself depends on NumPy. Keep `.venv/` local; it is ignored by Git.
 
-From this directory in PowerShell:
+For paid OpenRouter collection, set the API key only in the current shell:
 
 ```powershell
-$env:PYTHONPATH = (Resolve-Path "src")
+$env:OPENROUTER_API_KEY = "sk-or-v1-..."
+```
+
+```bash
+export OPENROUTER_API_KEY='sk-or-v1-...'
+```
+
+Never commit an API key. Offline tests, demos, baseline replay, and figure
+inspection do not use OpenRouter credits.
+
+## Run the project
+
+### 1. Verify the implementation offline
+
+```powershell
 python -m unittest discover -s tests -v
 ```
 
-Create an inspectable SQLite database and JSON record without network calls:
+The suite covers the state machine, grading, storage, provider responses,
+resumable collection, benchmark loading, and static baselines.
+
+### 2. Run small offline demos
+
+Create an inspectable SQLite ledger and JSON record without network calls:
 
 ```powershell
-$env:PYTHONPATH = (Resolve-Path "src")
 python examples/minimal_record_demo.py `
   --database artifacts/minimal_record.sqlite3 `
   --output artifacts/minimal_record.json
 ```
 
-The demo records two rejected verifier calls followed by a correct final answer.
-It demonstrates that the final answer is independently graded as correct even
-though no verifier accepted it and the final verifier slot is explicitly marked
-`not_applicable_final`.
-
-## MathQA benchmark
-
-The preparation script downloads the archive published by the official MathQA
-project, validates the 2,985-row test split, and samples 200 rows without
-replacement with seed `20261005`:
+Create a small trace for all four search methods:
 
 ```powershell
-$env:PYTHONPATH = (Resolve-Path "src")
-python scripts/prepare_mathqa.py
-```
-
-The selected source indices and SHA-256 hashes are frozen in
-`data/mathqa/manifest.json`. See `data/mathqa/README.md` for provenance.
-
-## Fixed-sequence baselines
-
-The offline runner supports exactly these methods:
-
-- GittinsEval with frozen full-panel mean realized USD costs;
-- GittinsEval with one unit per complete run;
-- UCB-E with `mean + sqrt(alpha / n)` allocation;
-- Uniform allocation.
-
-All methods share seeded per-configuration record queues and the same paid
-one-record-per-configuration initialization. They recommend configurations, not
-within-question actions. Gittins uses the finite-panel Gaussian index and the
-`M - sqrt(V)` anytime recommendation from Qian's protocol. UCB-E and Uniform do
-not receive the oracle cost vector, although every method's plotted/search cost
-still sums purchased records' realized USD charges.
-
-```powershell
-$env:PYTHONPATH = (Resolve-Path "src")
-python scripts/run_static_baselines.py `
-  --panel artifacts/static_panel.jsonl `
-  --max-purchases 200 `
-  --seed 0 `
-  --seeds 1 `
-  --held-out `
-  --output artifacts/static_baselines.json
-```
-
-The panel carries `development`/`reserved_test` labels. Held-out mode searches
-only development records and evaluates frozen recommendations on reserved-test
-records. The panel schema and the SQLite export command are documented in
-`docs/static_baselines.md`. Baseline replay is offline and incurs no API cost.
-
-Create a small inspectable trace for all four methods without network calls:
-
-```powershell
-$env:PYTHONPATH = (Resolve-Path "src")
 python examples/minimal_static_baseline_demo.py
 ```
 
-Run the complete 100-development/100-reserved-test protocol from Git Bash or
-WSL. The script collects all 27 configurations on development, runs all four
-baselines with seed 0, freezes their selected-configuration union, and only then
-collects and evaluates reserved-test records. Re-running the same command
-resumes an interrupted collection from its SQLite ledger.
+### 3. Prepare the deterministic MathQA benchmark
+
+```powershell
+python scripts/prepare_mathqa.py
+```
+
+The script downloads the official MathQA archive, validates the 2,985-row test
+split, samples 200 rows without replacement, and verifies the frozen manifest in
+`data/mathqa/manifest.json`.
+
+### 4. Run the complete collection protocol
+
+This step makes paid OpenRouter calls. Review the model list, question count,
+provider routing, and spending limit before starting. From Git Bash or WSL:
 
 ```bash
-export OPENROUTER_API_KEY='sk-or-v1-...'
 bash scripts/run_qian200_baselines.sh
 ```
 
-Set `WORKERS`, `TIMEOUT_SECONDS`, `PYTHON_BIN`, or `RUN_DIR` in the environment
-to override their defaults. Paid workflow records, per-call requests/responses,
-tokens, costs, and timings are written under `artifacts/qian200/`; see
-`docs/openrouter_pilot.md` for the SQLite and detailed-JSONL inspection commands.
+The command collects the balanced development panel, runs the four search
+methods, freezes their selected-configuration union, and then collects the
+reserved-test records. An interrupted run resumes from its SQLite ledger.
+`WORKERS`, `TIMEOUT_SECONDS`, `PYTHON_BIN`, and `RUN_DIR` can override the
+defaults.
 
-Watch progress and inspect the live SQLite ledger while collection is running:
+Monitor an active run with:
 
 ```bash
 tail -f artifacts/qian200/pipeline_console.log
@@ -180,74 +211,56 @@ python scripts/inspect_experiment.py \
   --database artifacts/qian200/development.sqlite3 --recent 20
 ```
 
-The JSONL files are the full per-workflow audit logs, not summaries. Line 1 is
-the run header and every later line contains one workflow with its attempts,
-solver/verifier requests and responses, parsed answers, verdicts, tokens, costs,
-latencies, and grade. Pretty-print the first workflow or the complete baseline
-search trace with only Python's standard library:
+### 5. Replay search and regenerate tables and figures
 
-```bash
-sed -n '2p' artifacts/qian200/development_detailed.jsonl | python -m json.tool
-python -m json.tool artifacts/qian200/development_search.json
-python -m json.tool artifacts/qian200/final_held_out.json
+With the saved panels under `artifacts/qian200/`, replay 100 offline seeds:
+
+```powershell
+python scripts/run_static_baselines.py `
+  --panel artifacts/qian200/development_panel.jsonl `
+  --evaluation-panel artifacts/qian200/reserved_test_panel.jsonl `
+  --max-purchases 2700 `
+  --seed 0 `
+  --seeds 100 `
+  --budget-points 121 `
+  --curve-csv artifacts/qian200/final_held_out_100_seeds_matched_budget_curve.csv `
+  --output artifacts/qian200/final_held_out_100_seeds.json
+
+python scripts/analyze_qian200_results.py
 ```
 
-`development_search.json` retains every baseline purchase and checkpoint. Its
-matched 121-point realized-USD curve is also written in analysis-ready form to
-`development_search_matched_budget_curve.csv`. Each method/budget row reports
-mean panel accuracy, mean simple regret, and optimal-selection fraction using
-the last completed checkpoint affordable at that budget, without interpolation
-or lookahead. It also reports the mean completed-workflow count. With the
-pipeline's single search seed the fraction is binary;
-run additional offline seeds as documented in `docs/static_baselines.md` when
-estimating search-order variability. Additional seeds do not make API calls.
+This replay makes no model API calls. The first command writes a large full
+trace under `artifacts/`; the analysis command refreshes the compact files in
+`docs/results/qian200/` and `docs/figures/qian200/`.
 
-## Using OpenRouter
+## Workflow and audit semantics
 
-Application code can construct `OpenRouterClient(os.environ["OPENROUTER_API_KEY"])`
-and pass it to `WorkflowRunner`. The client sends one request per invocation and
-does not retry. It asks OpenRouter to include usage data and records the returned
-model, provider, input/output tokens, raw response, and provider-reported cost.
-GPT-OSS verifier requests exclude the Darkbloom endpoint because it produced
-paid reasoning-only responses with `message.content=null` under strict
-JSON-schema requests; the raw failures remain preserved in the original SQLite
-ledger.
+For `max_retries = r`, a configuration contains `r + 1` ordered solver models
+and `r` ordered verifier models. A verifier acceptance returns the current
+answer immediately. A rejection continues to the next solver, and retry
+exhaustion returns the final solver response without another verifier call.
 
-Before a paid experiment, freeze current model IDs, role parameters, provider
-routing policy, token prices, prompt versions, question IDs, retry count, request
-limit, and spending limit in the run settings. Do not use response caching or
-reuse outcomes across configurations unless a later experiment explicitly
-defines that as part of its methodology.
+The ledger represents every planned call slot as executed, failed,
+skipped-after-acceptance, or not-applicable-final. Accuracy is computed from the
+returned option and an independently loaded answer key. Search uses saved
+development records, while the reserved-test result is evaluated only after the
+recommendation is frozen.
 
-For the reproducible 20-question pilot, safe key handling, preview and paid-run
-commands, ledger export, and the optional complete 27-configuration panel, see
-[`docs/openrouter_pilot.md`](docs/openrouter_pilot.md). The default command is
-preview-only and cannot call OpenRouter.
+Raw SQLite ledgers, detailed request/response JSONL files, and full search traces
+remain under `artifacts/qian200/` and are ignored because of their size. Their
+SHA-256 hashes are recorded in
+`docs/results/qian200/experiment_summary.json`.
 
-## Batch-runner invariants
+## Next steps
 
-The production batch runner is ready only when all of the following are true:
-
-1. Any nonnegative `max_retries` works; the supplied solver and verifier model
-   sequences must have lengths `r+1` and `r`.
-2. The Qian model set produces exactly 27 unique one-retry configurations and
-   243 unique two-retry configurations, including changing critics.
-3. A verifier acceptance stops only the current question and creates no later
-   calls for that execution.
-4. Retry exhaustion returns the final solver answer and never calls a final
-   verifier.
-5. MathQA grading uses only the returned option and an independently loaded
-   answer key; keys never enter solver or verifier requests.
-6. Every planned call slot is represented as executed, failed,
-   skipped-after-early-stop, or not-applicable-final. A missing call is never
-   encoded as `accepted=false`.
-7. Every executed call retains role, attempt number, requested and returned
-   model, provider, raw request/response, token counts, elapsed time, actual
-   reported USD cost, and nullable verifier verdict.
-8. Equal-call, model-fixed, and actual-token cost views use only executed calls;
-   provider-reported actual cost remains a separate audit value.
-9. Incomplete or failed executions are excluded from accuracy rather than
-   silently scored as zero.
-10. Offline unit tests and a fake-client integration test pass before any paid
-    OpenRouter run is proposed.
-
+1. Predeclare a sensitivity study for the Gittins cost-scaling factor and rerun
+   it entirely from the saved development panel.
+2. Collect fresh repeated generations for the strongest workflows to separate
+   question-sampling variation from model-generation variation.
+3. Evaluate adaptive retry-boundary routing with the same ledger, grading, cost,
+   and held-out protocol.
+4. Expand the reserved-test comparison after freezing a small candidate set,
+   then report accuracy, cost, and uncertainty for every frozen candidate.
+5. Package the ignored raw audit artifacts in versioned external storage so
+   collaborators can reproduce every table and figure from the exact source
+   records.
