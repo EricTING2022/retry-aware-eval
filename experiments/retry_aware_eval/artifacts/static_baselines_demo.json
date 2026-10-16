@@ -1,0 +1,734 @@
+{
+  "methods": [
+    {
+      "checkpoints": [
+        {
+          "cumulative_realized_cost_usd": 0.060000000000000005,
+          "purchases": 3,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.08,
+          "purchases": 4,
+          "recommended_configuration_id": "fixed-sequence-b",
+          "recommended_panel_accuracy": 0.5,
+          "simple_regret": 0.33333333333333337
+        },
+        {
+          "cumulative_realized_cost_usd": 0.11,
+          "purchases": 5,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.13,
+          "purchases": 6,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.16,
+          "purchases": 7,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.19,
+          "purchases": 8,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.2,
+          "purchases": 9,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.22,
+          "purchases": 10,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.24,
+          "purchases": 11,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.27,
+          "purchases": 12,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        }
+      ],
+      "cost_input_by_configuration": {
+        "fixed-sequence-a": 0.03,
+        "fixed-sequence-b": 0.02,
+        "fixed-sequence-c": 0.01
+      },
+      "cost_scaling_factor": 0.0001,
+      "initialization_purchases": 3,
+      "max_purchases": 12,
+      "method": "gittins_full_panel_cost",
+      "natural_stop_purchase": null,
+      "purchases": [
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 1,
+          "question_id": "q-3",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-3",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 2,
+          "question_id": "q-2",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-2",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-c",
+          "purchase_index": 3,
+          "question_id": "q-1",
+          "realized_cost_usd": 0.01,
+          "record_id": "fixed-sequence-c-1",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 4,
+          "question_id": "q-0",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-0",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 5,
+          "question_id": "q-0",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-0",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 6,
+          "question_id": "q-3",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-3",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 7,
+          "question_id": "q-5",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-5",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 8,
+          "question_id": "q-4",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-4",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-c",
+          "purchase_index": 9,
+          "question_id": "q-0",
+          "realized_cost_usd": 0.01,
+          "record_id": "fixed-sequence-c-0",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 10,
+          "question_id": "q-4",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-4",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 11,
+          "question_id": "q-1",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-1",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 12,
+          "question_id": "q-2",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-2",
+          "reward": 1.0
+        }
+      ],
+      "schema_version": "static-baseline-trace-v1",
+      "seed": 7
+    },
+    {
+      "checkpoints": [
+        {
+          "cumulative_realized_cost_usd": 0.060000000000000005,
+          "purchases": 3,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.09,
+          "purchases": 4,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.11,
+          "purchases": 5,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.14,
+          "purchases": 6,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.16,
+          "purchases": 7,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.19,
+          "purchases": 8,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.21,
+          "purchases": 9,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.24,
+          "purchases": 10,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.26,
+          "purchases": 11,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.27,
+          "purchases": 12,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        }
+      ],
+      "cost_input_by_configuration": {
+        "fixed-sequence-a": 1.0,
+        "fixed-sequence-b": 1.0,
+        "fixed-sequence-c": 1.0
+      },
+      "cost_scaling_factor": 0.0001,
+      "initialization_purchases": 3,
+      "max_purchases": 12,
+      "method": "gittins_unit_run_cost",
+      "natural_stop_purchase": null,
+      "purchases": [
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 1,
+          "question_id": "q-3",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-3",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 2,
+          "question_id": "q-2",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-2",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-c",
+          "purchase_index": 3,
+          "question_id": "q-1",
+          "realized_cost_usd": 0.01,
+          "record_id": "fixed-sequence-c-1",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 4,
+          "question_id": "q-0",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-0",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 5,
+          "question_id": "q-0",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-0",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 6,
+          "question_id": "q-5",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-5",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 7,
+          "question_id": "q-3",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-3",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 8,
+          "question_id": "q-4",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-4",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 9,
+          "question_id": "q-4",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-4",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 10,
+          "question_id": "q-2",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-2",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 11,
+          "question_id": "q-1",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-1",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-c",
+          "purchase_index": 12,
+          "question_id": "q-0",
+          "realized_cost_usd": 0.01,
+          "record_id": "fixed-sequence-c-0",
+          "reward": 0.0
+        }
+      ],
+      "schema_version": "static-baseline-trace-v1",
+      "seed": 7
+    },
+    {
+      "checkpoints": [
+        {
+          "cumulative_realized_cost_usd": 0.060000000000000005,
+          "purchases": 3,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.09,
+          "purchases": 4,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.11,
+          "purchases": 5,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.14,
+          "purchases": 6,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.16,
+          "purchases": 7,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.19,
+          "purchases": 8,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.22,
+          "purchases": 9,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.25,
+          "purchases": 10,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.27,
+          "purchases": 11,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.29000000000000004,
+          "purchases": 12,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        }
+      ],
+      "cost_input_by_configuration": {},
+      "cost_scaling_factor": null,
+      "initialization_purchases": 3,
+      "max_purchases": 12,
+      "method": "ucb_e",
+      "natural_stop_purchase": null,
+      "purchases": [
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 1,
+          "question_id": "q-3",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-3",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 2,
+          "question_id": "q-2",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-2",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-c",
+          "purchase_index": 3,
+          "question_id": "q-1",
+          "realized_cost_usd": 0.01,
+          "record_id": "fixed-sequence-c-1",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 4,
+          "question_id": "q-0",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-0",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 5,
+          "question_id": "q-0",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-0",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 6,
+          "question_id": "q-5",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-5",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 7,
+          "question_id": "q-3",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-3",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 8,
+          "question_id": "q-4",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-4",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 9,
+          "question_id": "q-2",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-2",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 10,
+          "question_id": "q-1",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-1",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 11,
+          "question_id": "q-4",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-4",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 12,
+          "question_id": "q-1",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-1",
+          "reward": 0.0
+        }
+      ],
+      "schema_version": "static-baseline-trace-v1",
+      "seed": 7
+    },
+    {
+      "checkpoints": [
+        {
+          "cumulative_realized_cost_usd": 0.060000000000000005,
+          "purchases": 3,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.09,
+          "purchases": 4,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.11,
+          "purchases": 5,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.12,
+          "purchases": 6,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.15,
+          "purchases": 7,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.16999999999999998,
+          "purchases": 8,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.18,
+          "purchases": 9,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.21,
+          "purchases": 10,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.22999999999999998,
+          "purchases": 11,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        },
+        {
+          "cumulative_realized_cost_usd": 0.24,
+          "purchases": 12,
+          "recommended_configuration_id": "fixed-sequence-a",
+          "recommended_panel_accuracy": 0.8333333333333334,
+          "simple_regret": 0.0
+        }
+      ],
+      "cost_input_by_configuration": {},
+      "cost_scaling_factor": null,
+      "initialization_purchases": 3,
+      "max_purchases": 12,
+      "method": "uniform",
+      "natural_stop_purchase": null,
+      "purchases": [
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 1,
+          "question_id": "q-3",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-3",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 2,
+          "question_id": "q-2",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-2",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-c",
+          "purchase_index": 3,
+          "question_id": "q-1",
+          "realized_cost_usd": 0.01,
+          "record_id": "fixed-sequence-c-1",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 4,
+          "question_id": "q-0",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-0",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 5,
+          "question_id": "q-0",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-0",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-c",
+          "purchase_index": 6,
+          "question_id": "q-0",
+          "realized_cost_usd": 0.01,
+          "record_id": "fixed-sequence-c-0",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 7,
+          "question_id": "q-5",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-5",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 8,
+          "question_id": "q-3",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-3",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-c",
+          "purchase_index": 9,
+          "question_id": "q-5",
+          "realized_cost_usd": 0.01,
+          "record_id": "fixed-sequence-c-5",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-a",
+          "purchase_index": 10,
+          "question_id": "q-4",
+          "realized_cost_usd": 0.03,
+          "record_id": "fixed-sequence-a-4",
+          "reward": 0.0
+        },
+        {
+          "configuration_id": "fixed-sequence-b",
+          "purchase_index": 11,
+          "question_id": "q-4",
+          "realized_cost_usd": 0.02,
+          "record_id": "fixed-sequence-b-4",
+          "reward": 1.0
+        },
+        {
+          "configuration_id": "fixed-sequence-c",
+          "purchase_index": 12,
+          "question_id": "q-2",
+          "realized_cost_usd": 0.01,
+          "record_id": "fixed-sequence-c-2",
+          "reward": 1.0
+        }
+      ],
+      "schema_version": "static-baseline-trace-v1",
+      "seed": 7
+    }
+  ],
+  "network_calls": 0,
+  "schema_version": "static-baseline-demo-v1"
+}
