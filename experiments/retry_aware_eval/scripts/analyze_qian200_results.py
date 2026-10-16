@@ -61,12 +61,14 @@ LINESTYLES = {
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--run-dir", type=Path, default=PROJECT_ROOT / "artifacts" / "qian200"
+        "--run-dir",
+        type=Path,
+        default=PROJECT_ROOT / "data" / "retry-aware-baseline",
     )
     parser.add_argument(
         "--baseline-json",
         type=Path,
-        help="Held-out baseline JSON; defaults to final_held_out.json in --run-dir.",
+        help="Held-out baseline JSON; defaults to search/final_held_out.json.",
     )
     parser.add_argument(
         "--curve-csv",
@@ -438,22 +440,26 @@ def wall_seconds(summary: dict[str, object]) -> float:
 def main() -> int:
     args = parse_args()
     run_dir = args.run_dir.resolve()
-    baseline_json = (args.baseline_json or run_dir / "final_held_out.json").resolve()
-    hundred_seed_curve = run_dir / "final_held_out_100_seeds_matched_budget_curve.csv"
+    baseline_json = (
+        args.baseline_json or run_dir / "search" / "final_held_out.json"
+    ).resolve()
+    hundred_seed_curve = (
+        run_dir / "search" / "final_held_out_100_seeds_matched_budget_curve.csv"
+    )
     curve_csv = (
         args.curve_csv
         or (
             hundred_seed_curve
             if hundred_seed_curve.exists()
-            else run_dir / "final_held_out_matched_budget_curve.csv"
+            else run_dir / "search" / "final_held_out_matched_budget_curve.csv"
         )
     ).resolve()
     paths = {
-        "development_summary": run_dir / "development_summary.json",
-        "reserved_summary": run_dir / "reserved_test_summary.json",
-        "development_panel": run_dir / "development_panel.jsonl",
-        "reserved_panel": run_dir / "reserved_test_panel.jsonl",
-        "selected": run_dir / "selected_configurations.json",
+        "development_summary": run_dir / "summaries" / "development_summary.json",
+        "reserved_summary": run_dir / "summaries" / "reserved_test_summary.json",
+        "development_panel": run_dir / "panels" / "development_panel.jsonl",
+        "reserved_panel": run_dir / "panels" / "reserved_test_panel.jsonl",
+        "selected": run_dir / "search" / "selected_configurations.json",
         "baseline": baseline_json,
         "curve": curve_csv,
     }

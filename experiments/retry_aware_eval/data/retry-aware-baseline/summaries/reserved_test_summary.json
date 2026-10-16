@@ -1,0 +1,67 @@
+{
+  "archived_technical_retry_count": 0,
+  "call_elapsed_seconds": 749.108710000015,
+  "call_status_counts": {
+    "executed": 251,
+    "not_applicable_final": 100,
+    "skipped_early_stop": 49
+  },
+  "configuration_count": 1,
+  "created_at_utc": "2026-10-16T09:57:03.028505+00:00",
+  "database": "artifacts\\qian200\\reserved_test.sqlite3",
+  "detailed_log": "artifacts\\qian200\\reserved_test_detailed.jsonl",
+  "executed_call_count": 251,
+  "executed_calls_with_unknown_cost": 0,
+  "execution_counts": {
+    "completed": 100
+  },
+  "finished_at_utc": "2026-10-16T10:00:22.224193+00:00",
+  "grade_counts": {
+    "reserved_test": {
+      "correct": 87,
+      "graded": 100
+    }
+  },
+  "input_tokens": 80970,
+  "output_tokens": 37938,
+  "preset": "qian-27",
+  "reasoning_tokens": 19116,
+  "reported_cost_usd": 0.009012483,
+  "run_id": "bcda930a-fc8e-420b-a594-22b8b2261690",
+  "schema_version": "openrouter-pilot-summary-v2",
+  "status": "completed",
+  "stop_reason_counts": {
+    "retry_limit_reached": 51,
+    "verifier_accepted": 49
+  },
+  "usage_by_role_and_model": {
+    "solver:mistralai/ministral-8b-2512": {
+      "calls": 100,
+      "calls_with_unknown_cost": 0,
+      "elapsed_seconds": 160.05032829998527,
+      "input_tokens": 27570,
+      "output_tokens": 6211,
+      "reasoning_tokens": 0,
+      "reported_cost_usd": 0.00320172
+    },
+    "solver:openai/gpt-oss-20b": {
+      "calls": 51,
+      "calls_with_unknown_cost": 0,
+      "elapsed_seconds": 278.334050200021,
+      "input_tokens": 16049,
+      "output_tokens": 14815,
+      "reasoning_tokens": 7888,
+      "reported_cost_usd": 0.002312048
+    },
+    "verifier:openai/gpt-oss-20b": {
+      "calls": 100,
+      "calls_with_unknown_cost": 0,
+      "elapsed_seconds": 310.7243315000087,
+      "input_tokens": 37351,
+      "output_tokens": 16912,
+      "reasoning_tokens": 11228,
+      "reported_cost_usd": 0.003498715
+    }
+  },
+  "workflow_elapsed_seconds": 763.818757500092
+}

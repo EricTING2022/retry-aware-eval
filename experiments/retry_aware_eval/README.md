@@ -104,6 +104,7 @@ tokens, and 383,060 reasoning tokens. Every executed call has a recorded cost.
 
 The complete reviewable outputs are available here:
 
+- [complete experiment dataset and schema guide](data/retry-aware-baseline/README.md)
 - [interactive workflow diagram](docs/baseline_experiment_workflow.html)
 - [experiment summary](docs/results/qian200/experiment_summary.json)
 - [baseline summary](docs/results/qian200/baseline_summary.csv)
@@ -194,7 +195,8 @@ This step makes paid OpenRouter calls. Review the model list, question count,
 provider routing, and spending limit before starting. From Git Bash or WSL:
 
 ```bash
-bash scripts/run_qian200_baselines.sh
+RUN_DIR=artifacts/retry-aware-baseline-rerun \
+  bash scripts/run_qian200_baselines.sh
 ```
 
 The command collects the balanced development panel, runs the four search
@@ -206,31 +208,39 @@ defaults.
 Monitor an active run with:
 
 ```bash
-tail -f artifacts/qian200/pipeline_console.log
+tail -f artifacts/retry-aware-baseline-rerun/logs/pipeline_console.log
 python scripts/inspect_experiment.py \
-  --database artifacts/qian200/development.sqlite3 --recent 20
+  --database artifacts/retry-aware-baseline-rerun/ledgers/development.sqlite3 \
+  --recent 20
 ```
 
 ### 5. Replay search and regenerate tables and figures
 
-With the saved panels under `artifacts/qian200/`, replay 100 offline seeds:
+The complete saved source data is documented in
+[`data/retry-aware-baseline/`](data/retry-aware-baseline/README.md). Replay 100
+offline seeds into a separate working directory:
 
 ```powershell
+New-Item -ItemType Directory -Force artifacts/reproduced | Out-Null
+
 python scripts/run_static_baselines.py `
-  --panel artifacts/qian200/development_panel.jsonl `
-  --evaluation-panel artifacts/qian200/reserved_test_panel.jsonl `
+  --panel data/retry-aware-baseline/panels/development_panel.jsonl `
+  --evaluation-panel data/retry-aware-baseline/panels/reserved_test_panel.jsonl `
   --max-purchases 2700 `
   --seed 0 `
   --seeds 100 `
   --budget-points 121 `
-  --curve-csv artifacts/qian200/final_held_out_100_seeds_matched_budget_curve.csv `
-  --output artifacts/qian200/final_held_out_100_seeds.json
+  --curve-csv artifacts/reproduced/final_held_out_100_seeds_matched_budget_curve.csv `
+  --output artifacts/reproduced/final_held_out_100_seeds.json
 
-python scripts/analyze_qian200_results.py
+python scripts/analyze_qian200_results.py `
+  --run-dir data/retry-aware-baseline `
+  --baseline-json artifacts/reproduced/final_held_out_100_seeds.json `
+  --curve-csv artifacts/reproduced/final_held_out_100_seeds_matched_budget_curve.csv
 ```
 
 This replay makes no model API calls. The first command writes a large full
-trace under `artifacts/`; the analysis command refreshes the compact files in
+trace under `artifacts/reproduced/`; the analysis command refreshes the compact files in
 `docs/results/qian200/` and `docs/figures/qian200/`.
 
 ## Workflow and audit semantics
@@ -246,10 +256,11 @@ returned option and an independently loaded answer key. Search uses saved
 development records, while the reserved-test result is evaluated only after the
 recommendation is frozen.
 
-Raw SQLite ledgers, detailed request/response JSONL files, and full search traces
-remain under `artifacts/qian200/` and are ignored because of their size. Their
-SHA-256 hashes are recorded in
-`docs/results/qian200/experiment_summary.json`.
+The complete SQLite ledgers, detailed request/response JSONL files, panels,
+summaries, and search traces are versioned under `data/retry-aware-baseline/`.
+The 100-seed full trace is gzip-compressed to stay within GitHub's per-file
+limit; the compact panels, summaries, and CSVs remain directly previewable.
+Source hashes are also recorded in `docs/results/qian200/experiment_summary.json`.
 
 ## Next steps
 
@@ -261,6 +272,5 @@ SHA-256 hashes are recorded in
    and held-out protocol.
 4. Expand the reserved-test comparison after freezing a small candidate set,
    then report accuracy, cost, and uncertainty for every frozen candidate.
-5. Package the ignored raw audit artifacts in versioned external storage so
-   collaborators can reproduce every table and figure from the exact source
-   records.
+5. Version the dataset schema and publish updated checksums whenever a new
+   collection or analysis snapshot is added.

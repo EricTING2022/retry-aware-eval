@@ -9,24 +9,30 @@ cd "$ROOT_DIR"
 PYTHON_BIN="${PYTHON_BIN:-python}"
 WORKERS="${WORKERS:-4}"
 TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-300}"
-RUN_DIR="${RUN_DIR:-artifacts/qian200}"
+RUN_DIR="${RUN_DIR:-data/retry-aware-baseline}"
 BENCHMARK="${BENCHMARK:-data/mathqa/test_200.jsonl}"
-PIPELINE_LOG="$RUN_DIR/pipeline_console.log"
+LEDGER_DIR="$RUN_DIR/ledgers"
+AUDIT_DIR="$RUN_DIR/audit-logs"
+PANEL_DIR="$RUN_DIR/panels"
+SEARCH_DIR="$RUN_DIR/search"
+SUMMARY_DIR="$RUN_DIR/summaries"
+LOG_DIR="$RUN_DIR/logs"
+PIPELINE_LOG="$LOG_DIR/pipeline_console.log"
 
-DEV_DB="$RUN_DIR/development.sqlite3"
-DEV_SUMMARY="$RUN_DIR/development_summary.json"
-DEV_DETAIL="$RUN_DIR/development_detailed.jsonl"
-DEV_PANEL="$RUN_DIR/development_panel.jsonl"
-DEV_SEARCH="$RUN_DIR/development_search.json"
-DEV_CURVE="$RUN_DIR/development_search_matched_budget_curve.csv"
-SELECTED="$RUN_DIR/selected_configurations.json"
+DEV_DB="$LEDGER_DIR/development.sqlite3"
+DEV_SUMMARY="$SUMMARY_DIR/development_summary.json"
+DEV_DETAIL="$AUDIT_DIR/development_detailed.jsonl"
+DEV_PANEL="$PANEL_DIR/development_panel.jsonl"
+DEV_SEARCH="$SEARCH_DIR/development_search.json"
+DEV_CURVE="$SEARCH_DIR/development_search_matched_budget_curve.csv"
+SELECTED="$SEARCH_DIR/selected_configurations.json"
 
-TEST_DB="$RUN_DIR/reserved_test.sqlite3"
-TEST_SUMMARY="$RUN_DIR/reserved_test_summary.json"
-TEST_DETAIL="$RUN_DIR/reserved_test_detailed.jsonl"
-TEST_PANEL="$RUN_DIR/reserved_test_panel.jsonl"
-FINAL_RESULT="$RUN_DIR/final_held_out.json"
-FINAL_CURVE="$RUN_DIR/final_held_out_matched_budget_curve.csv"
+TEST_DB="$LEDGER_DIR/reserved_test.sqlite3"
+TEST_SUMMARY="$SUMMARY_DIR/reserved_test_summary.json"
+TEST_DETAIL="$AUDIT_DIR/reserved_test_detailed.jsonl"
+TEST_PANEL="$PANEL_DIR/reserved_test_panel.jsonl"
+FINAL_RESULT="$SEARCH_DIR/final_held_out.json"
+FINAL_CURVE="$SEARCH_DIR/final_held_out_matched_budget_curve.csv"
 
 if [[ "${OPENROUTER_API_KEY:-}" != sk-* ]]; then
   echo "OPENROUTER_API_KEY is missing or does not start with sk-." >&2
@@ -36,7 +42,8 @@ if [[ ! -f "$BENCHMARK" ]]; then
   echo "Benchmark not found: $BENCHMARK" >&2
   exit 2
 fi
-mkdir -p "$RUN_DIR"
+mkdir -p "$LEDGER_DIR" "$AUDIT_DIR" "$PANEL_DIR" "$SEARCH_DIR" \
+  "$SUMMARY_DIR" "$LOG_DIR"
 
 log_command() {
   echo

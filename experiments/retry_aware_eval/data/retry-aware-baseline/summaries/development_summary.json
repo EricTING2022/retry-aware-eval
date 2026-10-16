@@ -1,0 +1,94 @@
+{
+  "archived_technical_retry_count": 0,
+  "call_elapsed_seconds": 15558.174645999607,
+  "call_status_counts": {
+    "executed": 6685,
+    "not_applicable_final": 2700,
+    "skipped_early_stop": 1415
+  },
+  "configuration_count": 27,
+  "created_at_utc": "2026-10-16T08:49:34.673372+00:00",
+  "database": "artifacts\\qian200\\development.sqlite3",
+  "detailed_log": "artifacts\\qian200\\development_detailed.jsonl",
+  "executed_call_count": 6685,
+  "executed_calls_with_unknown_cost": 0,
+  "execution_counts": {
+    "completed": 2700
+  },
+  "finished_at_utc": "2026-10-16T09:56:53.774881+00:00",
+  "grade_counts": {
+    "development": {
+      "correct": 2078,
+      "graded": 2700
+    }
+  },
+  "input_tokens": 2073326,
+  "output_tokens": 668829,
+  "preset": "qian-27",
+  "reasoning_tokens": 363944,
+  "reported_cost_usd": 0.249293557,
+  "run_id": "99d50e8c-fc81-4ed3-9719-a986222b1d33",
+  "schema_version": "openrouter-pilot-summary-v2",
+  "status": "completed",
+  "stop_reason_counts": {
+    "retry_limit_reached": 1285,
+    "verifier_accepted": 1415
+  },
+  "usage_by_role_and_model": {
+    "solver:mistralai/ministral-8b-2512": {
+      "calls": 1330,
+      "calls_with_unknown_cost": 0,
+      "elapsed_seconds": 2094.6192301000556,
+      "input_tokens": 366060,
+      "output_tokens": 95681,
+      "reasoning_tokens": 0,
+      "reported_cost_usd": 0.03942477
+    },
+    "solver:openai/gpt-oss-20b": {
+      "calls": 1337,
+      "calls_with_unknown_cost": 0,
+      "elapsed_seconds": 4727.872263299898,
+      "input_tokens": 425041,
+      "output_tokens": 356153,
+      "reasoning_tokens": 266890,
+      "reported_cost_usd": 0.063337316
+    },
+    "solver:qwen/qwen3-32b": {
+      "calls": 1318,
+      "calls_with_unknown_cost": 0,
+      "elapsed_seconds": 4438.591056399804,
+      "input_tokens": 372503,
+      "output_tokens": 58040,
+      "reasoning_tokens": 0,
+      "reported_cost_usd": 0.05608516
+    },
+    "verifier:mistralai/ministral-8b-2512": {
+      "calls": 900,
+      "calls_with_unknown_cost": 0,
+      "elapsed_seconds": 759.6239179000113,
+      "input_tokens": 287060,
+      "output_tokens": 6021,
+      "reasoning_tokens": 0,
+      "reported_cost_usd": 0.031906785
+    },
+    "verifier:openai/gpt-oss-20b": {
+      "calls": 900,
+      "calls_with_unknown_cost": 0,
+      "elapsed_seconds": 2631.030967500061,
+      "input_tokens": 328999,
+      "output_tokens": 147726,
+      "reasoning_tokens": 97054,
+      "reported_cost_usd": 0.029585706
+    },
+    "verifier:qwen/qwen3-32b": {
+      "calls": 900,
+      "calls_with_unknown_cost": 0,
+      "elapsed_seconds": 906.437210799777,
+      "input_tokens": 293663,
+      "output_tokens": 5208,
+      "reasoning_tokens": 0,
+      "reported_cost_usd": 0.02895382
+    }
+  },
+  "workflow_elapsed_seconds": 15950.498413299472
+}

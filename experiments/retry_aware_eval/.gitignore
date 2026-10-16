@@ -2,9 +2,9 @@ __pycache__/
 *.py[cod]
 .venv/
 *.sqlite3
+!data/retry-aware-baseline/ledgers/*.sqlite3
 data/raw/
 artifacts/static_baselines.json
 artifacts/openrouter_*.json
 artifacts/*_detailed.jsonl
-artifacts/qian200/
 

@@ -1,0 +1,265 @@
+Qian 200-question protocol
+development=100 reserved_test=100 workers=4 timeout_seconds=300
++ python scripts/run_openrouter_pilot.py --preset qian-27 --partition development --benchmark data/mathqa/test_200.jsonl --database artifacts/qian200/development.sqlite3 --summary artifacts/qian200/development_summary.json --detailed-log artifacts/qian200/development_detailed.jsonl --workers 4 --timeout-seconds 300 --execute
+{
+  "benchmark": "data\\mathqa\\test_200.jsonl",
+  "benchmark_sha256": "b7b7e583c8f2ba8711dd7b1f531e8f5cb1a913f843d6f7aa5feedc67b7f71b32",
+  "configuration_count": 27,
+  "database": "artifacts\\qian200\\development.sqlite3",
+  "detailed_log": "artifacts\\qian200\\development_detailed.jsonl",
+  "maximum_calls": 8100,
+  "minimum_calls": 5400,
+  "mode": "execute",
+  "model_ids": [
+    "openai/gpt-oss-20b",
+    "mistralai/ministral-8b-2512",
+    "qwen/qwen3-32b"
+  ],
+  "partition_counts": {
+    "development": 100
+  },
+  "preset": "qian-27",
+  "question_count": 100,
+  "resume_run_id": null,
+  "summary": "artifacts\\qian200\\development_summary.json",
+  "workflow_count": 2700
+}
+completed_workflows=27/2700
+completed_workflows=54/2700
+completed_workflows=81/2700
+completed_workflows=108/2700
+completed_workflows=135/2700
+completed_workflows=162/2700
+completed_workflows=189/2700
+completed_workflows=216/2700
+completed_workflows=243/2700
+completed_workflows=270/2700
+completed_workflows=297/2700
+completed_workflows=324/2700
+completed_workflows=351/2700
+completed_workflows=378/2700
+completed_workflows=405/2700
+completed_workflows=432/2700
+completed_workflows=459/2700
+completed_workflows=486/2700
+completed_workflows=513/2700
+completed_workflows=540/2700
+completed_workflows=567/2700
+completed_workflows=594/2700
+completed_workflows=621/2700
+completed_workflows=648/2700
+completed_workflows=675/2700
+completed_workflows=702/2700
+completed_workflows=729/2700
+completed_workflows=756/2700
+completed_workflows=783/2700
+completed_workflows=810/2700
+completed_workflows=837/2700
+completed_workflows=864/2700
+completed_workflows=891/2700
+completed_workflows=918/2700
+completed_workflows=945/2700
+completed_workflows=972/2700
+completed_workflows=999/2700
+completed_workflows=1026/2700
+completed_workflows=1053/2700
+completed_workflows=1080/2700
+completed_workflows=1107/2700
+completed_workflows=1134/2700
+completed_workflows=1161/2700
+completed_workflows=1188/2700
+completed_workflows=1215/2700
+completed_workflows=1242/2700
+completed_workflows=1269/2700
+completed_workflows=1296/2700
+completed_workflows=1323/2700
+completed_workflows=1350/2700
+completed_workflows=1377/2700
+completed_workflows=1404/2700
+completed_workflows=1431/2700
+completed_workflows=1458/2700
+completed_workflows=1485/2700
+completed_workflows=1512/2700
+completed_workflows=1539/2700
+completed_workflows=1566/2700
+completed_workflows=1593/2700
+completed_workflows=1620/2700
+completed_workflows=1647/2700
+completed_workflows=1674/2700
+completed_workflows=1701/2700
+completed_workflows=1728/2700
+completed_workflows=1755/2700
+completed_workflows=1782/2700
+completed_workflows=1809/2700
+completed_workflows=1836/2700
+completed_workflows=1863/2700
+completed_workflows=1890/2700
+completed_workflows=1917/2700
+completed_workflows=1944/2700
+completed_workflows=1971/2700
+completed_workflows=1998/2700
+completed_workflows=2025/2700
+completed_workflows=2052/2700
+completed_workflows=2079/2700
+completed_workflows=2106/2700
+completed_workflows=2133/2700
+completed_workflows=2160/2700
+completed_workflows=2187/2700
+completed_workflows=2214/2700
+completed_workflows=2241/2700
+completed_workflows=2268/2700
+completed_workflows=2295/2700
+completed_workflows=2322/2700
+completed_workflows=2349/2700
+completed_workflows=2376/2700
+completed_workflows=2403/2700
+completed_workflows=2430/2700
+completed_workflows=2457/2700
+completed_workflows=2484/2700
+completed_workflows=2511/2700
+completed_workflows=2538/2700
+completed_workflows=2565/2700
+completed_workflows=2592/2700
+completed_workflows=2619/2700
+completed_workflows=2646/2700
+completed_workflows=2673/2700
+completed_workflows=2700/2700
+run_id=99d50e8c-fc81-4ed3-9719-a986222b1d33
+summary=artifacts\qian200\development_summary.json
+detailed_log=artifacts\qian200\development_detailed.jsonl
++ python scripts/export_static_panel.py --database artifacts/qian200/development.sqlite3 --run-id 99d50e8c-fc81-4ed3-9719-a986222b1d33 --benchmark data/mathqa/test_200.jsonl --output artifacts/qian200/development_panel.jsonl
+exported_records=2700 output=artifacts\qian200\development_panel.jsonl
++ python scripts/run_static_baselines.py --panel artifacts/qian200/development_panel.jsonl --max-purchases 2700 --seed 0 --seeds 1 --budget-points 121 --curve-csv artifacts/qian200/development_search_matched_budget_curve.csv --output artifacts/qian200/development_search.json
+runs=4 methods=4 seeds=1 configurations=27 output=artifacts\qian200\development_search.json curve_csv=artifacts\qian200\development_search_matched_budget_curve.csv
++ python scripts/extract_selected_configurations.py --baselines artifacts/qian200/development_search.json --output artifacts/qian200/selected_configurations.json
+selected_configurations=1 output=artifacts\qian200\selected_configurations.json
++ python scripts/run_openrouter_pilot.py --preset qian-27 --partition reserved_test --benchmark data/mathqa/test_200.jsonl --database artifacts/qian200/reserved_test.sqlite3 --summary artifacts/qian200/reserved_test_summary.json --detailed-log artifacts/qian200/reserved_test_detailed.jsonl --workers 4 --timeout-seconds 300 --configuration-ids-file artifacts/qian200/selected_configurations.json --execute
+{
+  "benchmark": "data\\mathqa\\test_200.jsonl",
+  "benchmark_sha256": "b7b7e583c8f2ba8711dd7b1f531e8f5cb1a913f843d6f7aa5feedc67b7f71b32",
+  "configuration_count": 1,
+  "database": "artifacts\\qian200\\reserved_test.sqlite3",
+  "detailed_log": "artifacts\\qian200\\reserved_test_detailed.jsonl",
+  "maximum_calls": 300,
+  "minimum_calls": 200,
+  "mode": "execute",
+  "model_ids": [
+    "mistralai/ministral-8b-2512",
+    "openai/gpt-oss-20b"
+  ],
+  "partition_counts": {
+    "reserved_test": 100
+  },
+  "preset": "qian-27",
+  "question_count": 100,
+  "resume_run_id": null,
+  "summary": "artifacts\\qian200\\reserved_test_summary.json",
+  "workflow_count": 100
+}
+completed_workflows=1/100
+completed_workflows=2/100
+completed_workflows=3/100
+completed_workflows=4/100
+completed_workflows=5/100
+completed_workflows=6/100
+completed_workflows=7/100
+completed_workflows=8/100
+completed_workflows=9/100
+completed_workflows=10/100
+completed_workflows=11/100
+completed_workflows=12/100
+completed_workflows=13/100
+completed_workflows=14/100
+completed_workflows=15/100
+completed_workflows=16/100
+completed_workflows=17/100
+completed_workflows=18/100
+completed_workflows=19/100
+completed_workflows=20/100
+completed_workflows=21/100
+completed_workflows=22/100
+completed_workflows=23/100
+completed_workflows=24/100
+completed_workflows=25/100
+completed_workflows=26/100
+completed_workflows=27/100
+completed_workflows=28/100
+completed_workflows=29/100
+completed_workflows=30/100
+completed_workflows=31/100
+completed_workflows=32/100
+completed_workflows=33/100
+completed_workflows=34/100
+completed_workflows=35/100
+completed_workflows=36/100
+completed_workflows=37/100
+completed_workflows=38/100
+completed_workflows=39/100
+completed_workflows=40/100
+completed_workflows=41/100
+completed_workflows=42/100
+completed_workflows=43/100
+completed_workflows=44/100
+completed_workflows=45/100
+completed_workflows=46/100
+completed_workflows=47/100
+completed_workflows=48/100
+completed_workflows=49/100
+completed_workflows=50/100
+completed_workflows=51/100
+completed_workflows=52/100
+completed_workflows=53/100
+completed_workflows=54/100
+completed_workflows=55/100
+completed_workflows=56/100
+completed_workflows=57/100
+completed_workflows=58/100
+completed_workflows=59/100
+completed_workflows=60/100
+completed_workflows=61/100
+completed_workflows=62/100
+completed_workflows=63/100
+completed_workflows=64/100
+completed_workflows=65/100
+completed_workflows=66/100
+completed_workflows=67/100
+completed_workflows=68/100
+completed_workflows=69/100
+completed_workflows=70/100
+completed_workflows=71/100
+completed_workflows=72/100
+completed_workflows=73/100
+completed_workflows=74/100
+completed_workflows=75/100
+completed_workflows=76/100
+completed_workflows=77/100
+completed_workflows=78/100
+completed_workflows=79/100
+completed_workflows=80/100
+completed_workflows=81/100
+completed_workflows=82/100
+completed_workflows=83/100
+completed_workflows=84/100
+completed_workflows=85/100
+completed_workflows=86/100
+completed_workflows=87/100
+completed_workflows=88/100
+completed_workflows=89/100
+completed_workflows=90/100
+completed_workflows=91/100
+completed_workflows=92/100
+completed_workflows=93/100
+completed_workflows=94/100
+completed_workflows=95/100
+completed_workflows=96/100
+completed_workflows=97/100
+completed_workflows=98/100
+completed_workflows=99/100
+completed_workflows=100/100
+run_id=bcda930a-fc8e-420b-a594-22b8b2261690
+summary=artifacts\qian200\reserved_test_summary.json
+detailed_log=artifacts\qian200\reserved_test_detailed.jsonl
++ python scripts/export_static_panel.py --database artifacts/qian200/reserved_test.sqlite3 --run-id bcda930a-fc8e-420b-a594-22b8b2261690 --benchmark data/mathqa/test_200.jsonl --output artifacts/qian200/reserved_test_panel.jsonl
+exported_records=100 output=artifacts\qian200\reserved_test_panel.jsonl
++ python scripts/run_static_baselines.py --panel artifacts/qian200/development_panel.jsonl --evaluation-panel artifacts/qian200/reserved_test_panel.jsonl --max-purchases 2700 --seed 0 --seeds 1 --budget-points 121 --curve-csv artifacts/qian200/final_held_out_matched_budget_curve.csv --output artifacts/qian200/final_held_out.json
+runs=4 methods=4 seeds=1 configurations=27 output=artifacts\qian200\final_held_out.json curve_csv=artifacts\qian200\final_held_out_matched_budget_curve.csv
